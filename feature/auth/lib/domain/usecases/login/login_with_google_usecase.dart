@@ -1,0 +1,12 @@
+import '../../models/auth_user.dart';
+import '../../repositories/auth_repository.dart';
+
+class LoginWithGoogleUseCase {
+  final AuthRepository _repository;
+
+  LoginWithGoogleUseCase(this._repository);
+
+  Future<AuthUser> call() {
+    return _repository.loginWithGoogle();
+  }
+}

@@ -1,0 +1,15 @@
+name: auth
+description: Auth feature package.
+version: 0.0.1
+publish_to: 'none'
+resolution: workspace
+
+environment:
+  sdk: ">=3.10.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  core:
+    path: ../../core
+  google_sign_in: ^6.2.1
