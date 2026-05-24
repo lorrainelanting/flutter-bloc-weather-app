@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "686993704912",
+    "project_id": "generic-app-ddb2e",
+    "storage_bucket": "generic-app-ddb2e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:686993704912:android:3cafdc84da8b809ee8dbd5",
+        "android_client_info": {
+          "package_name": "com.lorrainelanting.generic_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATMWOOSIGu6DrOYxUJeggJRSjs3eZEWgA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

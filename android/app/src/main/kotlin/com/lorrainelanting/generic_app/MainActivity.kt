@@ -1,4 +1,4 @@
-package com.example.generic_app_workspace
+package com.lorrainelanting.generic_app
 
 import io.flutter.embedding.android.FlutterActivity
 
