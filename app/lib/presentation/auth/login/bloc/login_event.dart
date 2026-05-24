@@ -26,3 +26,5 @@ class LoginPasswordChanged extends LoginEvent {
 class LoginSubmitted extends LoginEvent {}
 
 class LoginWithGoogleSubmitted extends LoginEvent {}
+
+class LoginNavigatedToRegister extends LoginEvent {}

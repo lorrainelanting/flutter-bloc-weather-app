@@ -29,19 +29,39 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginBloc, LoginState>(
-      listener: (context, state) {
-        if (state.status == LoginStatus.failure) {
-          ErrorDialog.show(
-            context,
-            message: state.errorMessage ?? 'Authentication Failure',
-          );
-        }
-        if (state.status == LoginStatus.success) {
-          // Navigate to home or dashboard
-          Navigator.of(context).pushReplacementNamed('/dashboard');
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<LoginBloc, LoginState>(
+          listenWhen: (previous, current) =>
+              previous.status != current.status &&
+              current.status == LoginStatus.failure,
+          listener: (context, state) {
+            ErrorDialog.show(
+              context,
+              message: state.errorMessage ?? 'Authentication Failure',
+            );
+          },
+        ),
+        BlocListener<LoginBloc, LoginState>(
+          listenWhen: (previous, current) =>
+              previous.navigateTo != current.navigateTo &&
+              current.navigateTo != null,
+          listener: (context, state) {
+            final navigationService = context.read<NavigationService>();
+
+            if (state.navigateTo == AppRoutes.dashboard) {
+              // Clear stack when going to dashboard
+              navigationService.pushNamedAndRemoveUntil(
+                state.navigateTo!,
+                    (route) => false,
+              );
+            } else {
+              // Use pushNamed for Register so user can go back to Login
+              navigationService.pushNamed(state.navigateTo!);
+            }
+          },
+        ),
+      ],
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -50,12 +70,17 @@ class LoginForm extends StatelessWidget {
               onChanged: (email) =>
                   context.read<LoginBloc>().add(LoginEmailChanged(email)),
               decoration: const InputDecoration(labelText: 'Email'),
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              autocorrect: false,
             ),
             TextField(
               onChanged: (password) =>
                   context.read<LoginBloc>().add(LoginPasswordChanged(password)),
               decoration: const InputDecoration(labelText: 'Password'),
               obscureText: true,
+              textInputAction: TextInputAction.done,
+              autocorrect: false,
             ),
             const SizedBox(height: 16),
             BlocBuilder<LoginBloc, LoginState>(
@@ -76,7 +101,8 @@ class LoginForm extends StatelessWidget {
               child: const Text('Login with Google'),
             ),
             TextButton(
-              onPressed: () => Navigator.of(context).pushNamed('/register'),
+              onPressed: () =>
+                  context.read<LoginBloc>().add(LoginNavigatedToRegister()),
               child: const Text('Don\'t have an account? Register'),
             ),
           ],

@@ -36,7 +36,11 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       );
       emit(state.copyWith(status: RegisterStatus.success));
     } on AuthFailure catch (e) {
-      emit(state.copyWith(status: RegisterStatus.failure, errorMessage: e.message));
+      if (e is GoogleSignInCanceledFailure) {
+        emit(state.copyWith(status: RegisterStatus.initial));
+      } else {
+        emit(state.copyWith(status: RegisterStatus.failure, errorMessage: e.message));
+      }
     } catch (e) {
       emit(state.copyWith(status: RegisterStatus.failure, errorMessage: e.toString()));
     }
@@ -51,7 +55,11 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       await _registerWithGoogleUseCase();
       emit(state.copyWith(status: RegisterStatus.success));
     } on AuthFailure catch (e) {
-      emit(state.copyWith(status: RegisterStatus.failure, errorMessage: e.message));
+      if (e is GoogleSignInCanceledFailure) {
+        emit(state.copyWith(status: RegisterStatus.initial));
+      } else {
+        emit(state.copyWith(status: RegisterStatus.failure, errorMessage: e.message));
+      }
     } catch (e) {
       emit(state.copyWith(status: RegisterStatus.failure, errorMessage: e.toString()));
     }

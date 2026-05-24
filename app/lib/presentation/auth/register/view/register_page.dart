@@ -38,7 +38,8 @@ class RegisterForm extends StatelessWidget {
           );
         }
         if (state.status == RegisterStatus.success) {
-          Navigator.of(context).pushReplacementNamed('/dashboard');
+          final navigationService = context.read<NavigationService>();
+          navigationService.pushNamedAndRemoveUntil('/dashboard', (route) => false);
         }
       },
       child: Padding(
@@ -49,12 +50,17 @@ class RegisterForm extends StatelessWidget {
               onChanged: (email) =>
                   context.read<RegisterBloc>().add(RegisterEmailChanged(email)),
               decoration: const InputDecoration(labelText: 'Email'),
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              autocorrect: false,
             ),
             TextField(
               onChanged: (password) =>
                   context.read<RegisterBloc>().add(RegisterPasswordChanged(password)),
               decoration: const InputDecoration(labelText: 'Password'),
               obscureText: true,
+              textInputAction: TextInputAction.done,
+              autocorrect: false,
             ),
             const SizedBox(height: 16),
             BlocBuilder<RegisterBloc, RegisterState>(
