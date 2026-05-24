@@ -10,3 +10,4 @@ export 'core/error/auth_failure.dart';
 export 'core/error/auth_error_handler.dart';
 export 'data/repositories/auth_repository_impl.dart';
 export 'data/datasources/local/auth_local_data_source.dart';
+export 'data/datasources/remote/auth_remote_data_source.dart';

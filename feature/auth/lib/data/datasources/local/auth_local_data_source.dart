@@ -1,30 +1,20 @@
-import 'dart:math';
-
 import 'package:auth/auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-
 import '../../models/remote/auth_response.dart';
 
-abstract class AuthRemoteDataSource {
+abstract class AuthLocalDataSource {
   Future<AuthResponse> registerWithEmailAndPassword({
     required String email,
     required String password,
   });
 
-  Future<AuthResponse> registerWithGoogle();
-
   Future<AuthResponse> loginWithEmailAndPassword({
     required String email,
     required String password,
   });
-
-  Future<AuthResponse> loginWithGoogle();
 }
 
-class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-  final GoogleSignIn _googleSignIn;
-
-  AuthRemoteDataSourceImpl(this._googleSignIn);
+class AuthLocalDataSourceImpl implements AuthLocalDataSource {
+  AuthLocalDataSourceImpl();
 
   @override
   Future<AuthResponse> registerWithEmailAndPassword({
@@ -46,20 +36,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<AuthResponse> registerWithGoogle() async {
-    final GoogleSignInAccount? user = await _googleSignIn.signIn();
-    if (user != null) {
-      return AuthResponse(
-          id: user.id,
-          email: user.email,
-          displayName: user.displayName
-      );
-    } else {
-      throw GoogleSignInFailure();
-    }
-  }
-
-  @override
   Future<AuthResponse> loginWithEmailAndPassword({
     required String email,
     required String password,
@@ -75,20 +51,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       );
     } else {
       throw UserNotFoundFailure();
-    }
-  }
-
-  @override
-  Future<AuthResponse> loginWithGoogle() async {
-    final GoogleSignInAccount? user = await _googleSignIn.signIn();
-    if (user != null) {
-      return AuthResponse(
-          id: user.id,
-          email: user.email,
-          displayName: user.displayName
-      );
-    } else {
-      throw GoogleSignInFailure();
     }
   }
 }

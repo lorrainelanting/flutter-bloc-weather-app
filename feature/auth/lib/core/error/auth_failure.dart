@@ -28,3 +28,8 @@ class GoogleSignInFailure extends AuthFailure {
   const GoogleSignInFailure([String message = 'Google sign in failed'])
       : super('google-sign-in-failed', message);
 }
+
+class GoogleSignInCanceledFailure extends AuthFailure {
+  const GoogleSignInCanceledFailure([String message = 'Google sign in was canceled'])
+      : super('google-sign-in-canceled', message);
+}
