@@ -1,18 +1,30 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:auth/auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:core/core.dart';
+import 'navigation/navigation_service_impl.dart';
 import 'app.dart';
 
-void main() {
-  final googleSignIn = GoogleSignIn();
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  
   final authRepository = AuthRepositoryImpl(
-    remoteDataSource: AuthRemoteDataSourceImpl(googleSignIn),
+    localDataSource: AuthLocalDataSourceImpl(),
   );
+  final navigationService = NavigationServiceImpl();
 
   runApp(
-    RepositoryProvider<AuthRepository>(
-      create: (context) => authRepository,
+    MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<AuthRepository>(
+          create: (context) => authRepository,
+        ),
+        RepositoryProvider<NavigationService>(
+          create: (context) => navigationService,
+        ),
+      ],
       child: const MyApp(),
     ),
   );
