@@ -26,7 +26,7 @@ Responsible for data retrieval and persistence.
 - **Data Sources**: Handle raw data fetching from Remote APIs (e.g., Firebase, REST) or Local storage (e.g., SQLite, Prefs).
 - **Models**: Data Transfer Objects (DTOs) used for JSON serialization/deserialization.
 - **Mappers**: Logic to convert between Data Models and Domain Entities.
-
+         
 ### C. Presentation Layer (Located in `app/lib/presentation`)
 Responsible for the UI and user interaction.
 - **UI (Views/Pages)**: Flutter widgets that build the screen.

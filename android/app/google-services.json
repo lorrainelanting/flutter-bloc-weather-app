@@ -12,7 +12,12 @@
           "package_name": "com.lorrainelanting.generic_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "686993704912-vib64ictun7s6htm30448ohrqofc49g7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyATMWOOSIGu6DrOYxUJeggJRSjs3eZEWgA"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "686993704912-vib64ictun7s6htm30448ohrqofc49g7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
