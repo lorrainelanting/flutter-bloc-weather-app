@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:auth/auth.dart';
 import 'package:core/core.dart';
+import 'package:generic_app/l10n/app_localizations.dart';
 import '../bloc/login_bloc.dart';
 import '../bloc/login_event.dart';
 import '../bloc/login_state.dart';
@@ -11,8 +12,9 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      appBar: AppBar(title: Text(l10n.loginTitle)),
       body: BlocProvider(
         create: (context) => LoginBloc(
           loginWithEmailUseCase: LoginWithEmailUseCase(context.read<AuthRepository>()),
@@ -29,6 +31,7 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return MultiBlocListener(
       listeners: [
         BlocListener<LoginBloc, LoginState>(
@@ -91,19 +94,19 @@ class LoginForm extends StatelessWidget {
                         onPressed: state.email.isEmpty || state.password.isEmpty
                             ? null
                             : () => context.read<LoginBloc>().add(LoginSubmitted()),
-                        child: const Text('Login'),
+                        child: Text(l10n.loginButton),
                       );
               },
             ),
             TextButton(
               onPressed: () =>
                   context.read<LoginBloc>().add(LoginWithGoogleSubmitted()),
-              child: const Text('Login with Google'),
+              child: Text(l10n.loginWithGoogle),
             ),
             TextButton(
               onPressed: () =>
                   context.read<LoginBloc>().add(LoginNavigatedToRegister()),
-              child: const Text('Don\'t have an account? Register'),
+              child: Text(l10n.dontHaveAccount),
             ),
           ],
         ),

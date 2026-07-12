@@ -1,0 +1,22 @@
+{
+  "loginTitle": "Login",
+  "loginButton": "Login",
+  "loginWithGoogle": "Login with Google",
+  "dontHaveAccount": "Don't have an account? Register",
+
+  "registerTitle": "Register",
+  "registerButton": "Register",
+  "registerWithGoogle": "Register with Google",
+
+  "dashboardWeatherTitle": "Weather",
+  "dashboardSavedCitiesTitle": "Saved Cities",
+  "dashboardSettingsTitle": "Settings",
+
+  "tabHome": "Home",
+  "tabSaved": "Saved",
+  "tabSettings": "Settings",
+
+  "homeScreenPlaceholder": "Home Screen - Weather Forecast",
+  "savedCitiesPlaceholder": "Saved Cities Screen",
+  "settingsPlaceholder": "Settings Screen"
+}

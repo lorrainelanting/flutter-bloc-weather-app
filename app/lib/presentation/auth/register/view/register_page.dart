@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:auth/auth.dart';
 import 'package:core/core.dart';
+import 'package:generic_app/l10n/app_localizations.dart';
 import '../bloc/register_bloc.dart';
 import '../bloc/register_event.dart';
 import '../bloc/register_state.dart';
@@ -11,8 +12,9 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('Register')),
+      appBar: AppBar(title: Text(l10n.registerTitle)),
       body: BlocProvider(
         create: (context) => RegisterBloc(
           registerWithEmailUseCase: RegisterWithEmailUseCase(context.read<AuthRepository>()),
@@ -29,6 +31,7 @@ class RegisterForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return BlocListener<RegisterBloc, RegisterState>(
       listener: (context, state) {
         if (state.status == RegisterStatus.failure) {
@@ -71,14 +74,14 @@ class RegisterForm extends StatelessWidget {
                         onPressed: state.email.isEmpty || state.password.isEmpty
                             ? null
                             : () => context.read<RegisterBloc>().add(RegisterSubmitted()),
-                        child: const Text('Register'),
+                        child: Text(l10n.registerButton),
                       );
               },
             ),
             TextButton(
               onPressed: () =>
                   context.read<RegisterBloc>().add(RegisterWithGoogleSubmitted()),
-              child: const Text('Register with Google'),
+              child: Text(l10n.registerWithGoogle),
             ),
           ],
         ),
