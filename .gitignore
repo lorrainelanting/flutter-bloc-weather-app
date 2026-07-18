@@ -44,5 +44,7 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-app/build
-android/build
+**/build/
+
+# Environment secrets
+app/assets/.env
