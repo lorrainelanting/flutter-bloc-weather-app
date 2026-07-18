@@ -16,3 +16,13 @@ class ServerFailure extends Failure {
 class CacheFailure extends Failure {
   const CacheFailure(super.errorCode, super.message);
 }
+
+class LocationServiceDisabledFailure extends Failure {
+  const LocationServiceDisabledFailure()
+      : super('LOCATION_SERVICE_DISABLED', 'Location services are disabled');
+}
+
+class LocationPermissionDeniedFailure extends Failure {
+  const LocationPermissionDeniedFailure()
+      : super('LOCATION_PERMISSION_DENIED', 'Location permission was denied');
+}

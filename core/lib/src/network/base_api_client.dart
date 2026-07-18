@@ -30,7 +30,6 @@ class BaseApiClient {
     }
   }
 
-  /// Expose the Dio instance for Retrofit or direct usage.
   Dio get dio => _dio;
 
   /// Helper for GET requests
@@ -71,5 +70,5 @@ class BaseApiClient {
     );
   }
 
-  // Other HTTP methods (put, delete, patch) can be added as needed.
+  // Other HTTP methods (put, delete, patch)
 }
