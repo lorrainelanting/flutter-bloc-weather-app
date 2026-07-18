@@ -189,6 +189,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Settings Screen'**
   String get settingsPlaceholder;
+
+  /// No description provided for @weatherFeelsLike.
+  ///
+  /// In en, this message translates to:
+  /// **'Feels like {value}°'**
+  String weatherFeelsLike(String value);
+
+  /// No description provided for @weatherHumidity.
+  ///
+  /// In en, this message translates to:
+  /// **'Humidity {value}%'**
+  String weatherHumidity(String value);
+
+  /// No description provided for @weatherWind.
+  ///
+  /// In en, this message translates to:
+  /// **'Wind {value} m/s'**
+  String weatherWind(String value);
+
+  /// No description provided for @forecastTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Next 5 days'**
+  String get forecastTitle;
+
+  /// No description provided for @weatherRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get weatherRetry;
+
+  /// No description provided for @locationPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Location access is needed to show the weather for your area. Please enable it in your device settings.'**
+  String get locationPermissionDenied;
+
+  /// No description provided for @signOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get signOut;
 }
 
 class _AppLocalizationsDelegate

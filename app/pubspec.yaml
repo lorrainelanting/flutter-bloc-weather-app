@@ -41,6 +41,9 @@ dependencies:
   firebase_core: ^3.0.0
   firebase_auth: ^5.0.0
   google_sign_in: ^6.2.1
+  get_it: ^8.0.0
+  injectable: ^3.0.0
+  flutter_dotenv: ^5.2.1
 
   core:
     path: ../core
@@ -55,6 +58,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   change_app_package_name: ^1.5.0
+  injectable_generator: ^3.0.2
+  build_runner: ^2.4.9
+  bloc_test: any
+  mocktail: any
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

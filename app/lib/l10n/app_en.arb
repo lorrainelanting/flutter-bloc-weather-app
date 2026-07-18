@@ -18,5 +18,28 @@
 
   "homeScreenPlaceholder": "Home Screen - Weather Forecast",
   "savedCitiesPlaceholder": "Saved Cities Screen",
-  "settingsPlaceholder": "Settings Screen"
+  "settingsPlaceholder": "Settings Screen",
+
+  "weatherFeelsLike": "Feels like {value}°",
+  "@weatherFeelsLike": {
+    "placeholders": {
+      "value": {"type": "String"}
+    }
+  },
+  "weatherHumidity": "Humidity {value}%",
+  "@weatherHumidity": {
+    "placeholders": {
+      "value": {"type": "String"}
+    }
+  },
+  "weatherWind": "Wind {value} m/s",
+  "@weatherWind": {
+    "placeholders": {
+      "value": {"type": "String"}
+    }
+  },
+  "forecastTitle": "Next 5 days",
+  "weatherRetry": "Retry",
+  "locationPermissionDenied": "Location access is needed to show the weather for your area. Please enable it in your device settings.",
+  "signOut": "Sign out"
 }

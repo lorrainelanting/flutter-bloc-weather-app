@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:core/core.dart';
 import 'package:flutter/widgets.dart';
 
 /// Implementation of [NavigationService] using Flutter's [Navigator].
+@LazySingleton(as: NavigationService)
 class NavigationServiceImpl implements NavigationService {
   @override
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

@@ -55,4 +55,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsPlaceholder => 'Settings Screen';
+
+  @override
+  String weatherFeelsLike(String value) {
+    return 'Feels like $value°';
+  }
+
+  @override
+  String weatherHumidity(String value) {
+    return 'Humidity $value%';
+  }
+
+  @override
+  String weatherWind(String value) {
+    return 'Wind $value m/s';
+  }
+
+  @override
+  String get forecastTitle => 'Next 5 days';
+
+  @override
+  String get weatherRetry => 'Retry';
+
+  @override
+  String get locationPermissionDenied =>
+      'Location access is needed to show the weather for your area. Please enable it in your device settings.';
+
+  @override
+  String get signOut => 'Sign out';
 }
