@@ -5,6 +5,7 @@ import 'package:core/core.dart';
 import 'login_event.dart';
 import 'login_state.dart';
 
+@injectable
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginWithEmailUseCase _loginWithEmailUseCase;
   final LoginWithGoogleUseCase _loginWithGoogleUseCase;

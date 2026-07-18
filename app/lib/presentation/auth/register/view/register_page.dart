@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:auth/auth.dart';
 import 'package:core/core.dart';
 import 'package:generic_app/l10n/app_localizations.dart';
+import 'package:generic_app/injection/injection.dart';
 import '../bloc/register_bloc.dart';
 import '../bloc/register_event.dart';
 import '../bloc/register_state.dart';
@@ -16,10 +16,7 @@ class RegisterPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.registerTitle)),
       body: BlocProvider(
-        create: (context) => RegisterBloc(
-          registerWithEmailUseCase: RegisterWithEmailUseCase(context.read<AuthRepository>()),
-          registerWithGoogleUseCase: RegisterWithGoogleUseCase(context.read<AuthRepository>()),
-        ),
+        create: (context) => getIt<RegisterBloc>(),
         child: const RegisterForm(),
       ),
     );

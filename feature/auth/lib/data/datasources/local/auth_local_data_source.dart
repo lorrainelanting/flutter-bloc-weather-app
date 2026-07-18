@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:auth/auth.dart';
 import '../../models/remote/auth_response.dart';
 
@@ -13,6 +14,7 @@ abstract class AuthLocalDataSource {
   });
 }
 
+@Injectable(as: AuthLocalDataSource)
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   AuthLocalDataSourceImpl();
 

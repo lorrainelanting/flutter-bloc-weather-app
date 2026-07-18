@@ -1,8 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:auth/auth.dart';
 import 'register_event.dart';
 import 'register_state.dart';
 
+@injectable
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final RegisterWithEmailUseCase _registerWithEmailUseCase;
   final RegisterWithGoogleUseCase _registerWithGoogleUseCase;
@@ -36,11 +38,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       );
       emit(state.copyWith(status: RegisterStatus.success));
     } on AuthFailure catch (e) {
-      if (e is GoogleSignInCanceledFailure) {
-        emit(state.copyWith(status: RegisterStatus.initial));
-      } else {
-        emit(state.copyWith(status: RegisterStatus.failure, errorMessage: e.message));
-      }
+      emit(state.copyWith(status: RegisterStatus.failure, errorMessage: e.message));
     } catch (e) {
       emit(state.copyWith(status: RegisterStatus.failure, errorMessage: e.toString()));
     }

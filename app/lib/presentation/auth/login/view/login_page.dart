@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:auth/auth.dart';
 import 'package:core/core.dart';
 import 'package:generic_app/l10n/app_localizations.dart';
+import 'package:generic_app/injection/injection.dart';
 import '../bloc/login_bloc.dart';
 import '../bloc/login_event.dart';
 import '../bloc/login_state.dart';
@@ -16,10 +16,7 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.loginTitle)),
       body: BlocProvider(
-        create: (context) => LoginBloc(
-          loginWithEmailUseCase: LoginWithEmailUseCase(context.read<AuthRepository>()),
-          loginWithGoogleUseCase: LoginWithGoogleUseCase(context.read<AuthRepository>()),
-        ),
+        create: (context) => getIt<LoginBloc>(),
         child: const LoginForm(),
       ),
     );

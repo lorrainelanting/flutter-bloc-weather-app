@@ -1,4 +1,4 @@
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:core/core.dart';
 import '../../domain/models/auth_user.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../core/error/auth_error_handler.dart';
@@ -6,15 +6,16 @@ import '../datasources/local/auth_local_data_source.dart';
 import '../datasources/remote/auth_remote_data_source.dart';
 import '../mappers/auth_mapper.dart';
 
+@Injectable(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
   final AuthLocalDataSource _localDataSource;
   final AuthRemoteDataSource _remoteDataSource;
 
   AuthRepositoryImpl({
     required AuthLocalDataSource localDataSource,
-    GoogleSignIn? googleSignIn,
+    required AuthRemoteDataSource remoteDataSource,
   })  : _localDataSource = localDataSource,
-        _remoteDataSource = AuthRemoteDataSourceImpl(googleSignIn ?? GoogleSignIn());
+        _remoteDataSource = remoteDataSource;
 
   @override
   Future<AuthUser> registerWithEmailAndPassword({
@@ -63,6 +64,15 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response = await _remoteDataSource.loginWithGoogle();
       return response.toDomain();
+    } catch (e) {
+      throw AuthErrorHandler.handleException(e);
+    }
+  }
+
+  @override
+  Future<void> signOut() async {
+    try {
+      await _remoteDataSource.signOut();
     } catch (e) {
       throw AuthErrorHandler.handleException(e);
     }
