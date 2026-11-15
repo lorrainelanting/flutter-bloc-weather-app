@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "686993704912-j4eb3nhlvrh7cptnsk2fjfvolk169qj9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lorrainelanting.generic_app",
+            "certificate_hash": "9b919ef523a160111529d3610521687ef5cbf335"
+          }
+        },
+        {
           "client_id": "686993704912-vib64ictun7s6htm30448ohrqofc49g7.apps.googleusercontent.com",
           "client_type": 3
         }

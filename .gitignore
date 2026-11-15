@@ -48,3 +48,4 @@ app.*.map.json
 
 # Environment secrets
 app/assets/.env
+core/.env

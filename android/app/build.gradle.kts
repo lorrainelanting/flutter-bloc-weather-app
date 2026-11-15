@@ -1,9 +1,20 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
     id("com.google.gms.google-services")
+}
+val keystoreProperties = Properties()
+val keystorePropertiesFile = rootProject.file("key.properties")
+
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(
+        FileInputStream(keystorePropertiesFile)
+    )
 }
 
 android {
@@ -31,13 +42,46 @@ android {
         versionName = flutter.versionName
     }
 
-    buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+    signingConfigs {
+        create("release") {
+            keyAlias = keystoreProperties.getProperty("keyAlias")
+            keyPassword = keystoreProperties.getProperty("keyPassword")
+            storeFile = keystoreProperties.getProperty("storeFile")
+                ?.let { file(it) }
+            storePassword = keystoreProperties.getProperty("storePassword")
         }
     }
+
+    buildTypes {
+        getByName("debug") {
+            versionNameSuffix = "-debug"
+            isDebuggable = true
+        }
+
+        getByName("release") {
+            signingConfig = signingConfigs.getByName("release")
+
+            isMinifyEnabled = true
+            // TODO: proguard
+//            isShrinkResources = true
+//
+//            proguardFiles(
+//                getDefaultProguardFile("proguard-android-optimize.txt"),
+//                "proguard-rules.pro"
+//            )
+        }
+    }
+
+//    flavorDimensions += "environment"
+//    productFlavors {
+//        create("staging") {
+//            dimension = "environment"
+//            applicationIdSuffix = ".staging"
+//        }
+//        create("production") {
+//            dimension = "environment"
+//        }
+//    }
 
     dependencies{
         implementation(platform("com.google.firebase:firebase-bom:34.13.0"))
