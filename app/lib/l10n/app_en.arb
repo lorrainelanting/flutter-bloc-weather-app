@@ -20,6 +20,20 @@
   "savedCitiesPlaceholder": "Saved Cities Screen",
   "settingsPlaceholder": "Settings Screen",
 
+  "savedCitiesSearchHint": "Search for a city or place",
+  "savedCitiesNoResults": "No locations found",
+  "savedCitiesEmptyTitle": "No saved cities yet",
+  "savedCitiesEmptyMessage": "Search for a location to add its weather.",
+  "savedCitiesAddLocation": "Add location",
+  "savedCitiesRemoveSelected": "Remove selected",
+  "savedCitiesWeatherUnavailable": "Weather preview unavailable",
+  "savedCitiesUpdatedAt": "Updated {value}",
+  "@savedCitiesUpdatedAt": {
+    "placeholders": {
+      "value": {"type": "String"}
+    }
+  },
+
   "weatherFeelsLike": "Feels like {value}°",
   "@weatherFeelsLike": {
     "placeholders": {

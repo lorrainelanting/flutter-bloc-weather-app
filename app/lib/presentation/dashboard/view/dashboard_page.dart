@@ -23,16 +23,10 @@ class DashboardPage extends StatelessWidget {
 class DashboardView extends StatelessWidget {
   const DashboardView({super.key});
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    HomePage(),
-    SavedCitiesPage(),
-    SettingsPage(),
-  ];
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     final titles = <String>[
       l10n.dashboardWeatherTitle,
       l10n.dashboardSavedCitiesTitle,
@@ -48,7 +42,14 @@ class DashboardView extends StatelessWidget {
           ),
           body: IndexedStack(
             index: state.selectedIndex,
-            children: _widgetOptions,
+            children: [
+              HomePage(
+                selectedLocation: state.selectedLocation,
+                selectionVersion: state.selectionVersion,
+              ),
+              const SavedCitiesPage(),
+              const SettingsPage(),
+            ],
           ),
           bottomNavigationBar: BottomNavigationBar(
             items: <BottomNavigationBarItem>[

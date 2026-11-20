@@ -6,17 +6,25 @@ class OpenWeatherApiService {
 
   OpenWeatherApiService(this._client);
 
+  Future<dynamic> searchLocations({
+    required String query,
+    required String apiKey,
+  }) async {
+    final response = await _client.get(
+      'geo/1.0/direct',
+      queryParameters: {'q': query, 'limit': 5, 'appid': apiKey},
+    );
+
+    return response.data;
+  }
+
   Future<dynamic> getWeatherByCity({
     required String cityName,
     required String apiKey,
   }) async {
     final response = await _client.get(
-      'weather',
-      queryParameters: {
-        'q': cityName,
-        'appid': apiKey,
-        'units': 'metric',
-      },
+      'data/2.5/weather',
+      queryParameters: {'q': cityName, 'appid': apiKey, 'units': 'metric'},
     );
 
     return response.data;
@@ -28,7 +36,7 @@ class OpenWeatherApiService {
     required String apiKey,
   }) async {
     final response = await _client.get(
-      'weather',
+      'data/2.5/weather',
       queryParameters: {
         'lat': lat,
         'lon': lon,
@@ -46,7 +54,7 @@ class OpenWeatherApiService {
     required String apiKey,
   }) async {
     final response = await _client.get(
-      'forecast',
+      'data/2.5/forecast',
       queryParameters: {
         'lat': lat,
         'lon': lon,

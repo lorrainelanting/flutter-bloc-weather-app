@@ -6,20 +6,66 @@ import '../../../injection/injection.dart';
 import '../bloc/home_bloc.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  final WeatherLocation? selectedLocation;
+  final int selectionVersion;
+
+  const HomePage({super.key, this.selectedLocation, this.selectionVersion = 0});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          getIt<HomeBloc>()..add(const LoadWeatherForCurrentLocation()),
-      child: const HomeView(),
+      create: (context) {
+        final bloc = getIt<HomeBloc>();
+        final location = selectedLocation;
+        if (location == null) {
+          bloc.add(const LoadWeatherForCurrentLocation());
+        } else {
+          bloc.add(LoadWeatherForSavedLocation(location));
+        }
+        return bloc;
+      },
+      child: HomeView(
+        selectedLocation: selectedLocation,
+        selectionVersion: selectionVersion,
+      ),
     );
   }
 }
 
-class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+class HomeView extends StatefulWidget {
+  final WeatherLocation? selectedLocation;
+  final int selectionVersion;
+
+  const HomeView({
+    super.key,
+    required this.selectedLocation,
+    required this.selectionVersion,
+  });
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  void _refreshWeather() {
+    final location = widget.selectedLocation;
+    if (location == null) {
+      context.read<HomeBloc>().add(const LoadWeatherForCurrentLocation());
+    } else {
+      context.read<HomeBloc>().add(LoadWeatherForSavedLocation(location));
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant HomeView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.selectionVersion != oldWidget.selectionVersion &&
+        widget.selectedLocation != null) {
+      context.read<HomeBloc>().add(
+        LoadWeatherForSavedLocation(widget.selectedLocation!),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +79,10 @@ class HomeView extends StatelessWidget {
 
         if (state is HomeError) {
           return _HomeErrorView(
-            message: state.isPermissionDenied ? l10n.locationPermissionDenied : state.message,
-            onRetry: () => context
-                .read<HomeBloc>()
-                .add(const LoadWeatherForCurrentLocation()),
+            message: state.isPermissionDenied
+                ? l10n.locationPermissionDenied
+                : state.message,
+            onRetry: _refreshWeather,
           );
         }
 
@@ -44,14 +90,17 @@ class HomeView extends StatelessWidget {
           final weather = state.weatherData;
           return RefreshIndicator(
             onRefresh: () async {
-              context.read<HomeBloc>().add(const LoadWeatherForCurrentLocation());
+              _refreshWeather();
             },
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
                 _CurrentWeatherCard(weather: weather, l10n: l10n),
                 const SizedBox(height: 24),
-                Text(l10n.forecastTitle, style: Theme.of(context).textTheme.titleMedium),
+                Text(
+                  l10n.forecastTitle,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
                 const SizedBox(height: 8),
                 ListView.separated(
                   shrinkWrap: true,
@@ -94,7 +143,10 @@ class _CurrentWeatherCard extends StatelessWidget {
         children: [
           Text(weather.city, style: Theme.of(context).textTheme.headlineMedium),
           _WeatherIcon(icon: weather.icon, size: 72),
-          Text('${weather.temperature.round()}°C', style: Theme.of(context).textTheme.displayMedium),
+          Text(
+            '${weather.temperature.round()}°C',
+            style: Theme.of(context).textTheme.displayMedium,
+          ),
           Text(weather.description),
           const SizedBox(height: 8),
           Wrap(
@@ -127,7 +179,8 @@ class _WeatherIcon extends StatelessWidget {
       'https://openweathermap.org/img/wn/$icon@2x.png',
       width: size,
       height: size,
-      errorBuilder: (context, error, stackTrace) => SizedBox(width: size, height: size),
+      errorBuilder: (context, error, stackTrace) =>
+          SizedBox(width: size, height: size),
     );
   }
 }

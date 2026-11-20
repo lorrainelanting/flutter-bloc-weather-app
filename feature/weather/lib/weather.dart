@@ -1,6 +1,15 @@
+export 'domain/models/saved_city.dart';
 export 'domain/models/weather_data.dart';
+export 'domain/models/weather_location.dart';
 export 'domain/repositories/weather_repository.dart';
+export 'domain/usecases/get_saved_cities_usecase.dart';
+export 'domain/usecases/get_weather_for_saved_location_usecase.dart';
 export 'domain/usecases/get_weather_usecase.dart';
 export 'domain/usecases/get_weather_by_location_usecase.dart';
+export 'domain/usecases/remove_saved_cities_usecase.dart';
+export 'domain/usecases/save_location_usecase.dart';
+export 'domain/usecases/search_locations_usecase.dart';
+export 'data/datasources/local/saved_cities_local_data_source.dart';
+export 'data/datasources/local/shared_preferences_saved_cities_data_source.dart';
 export 'data/repositories/weather_repository_impl.dart';
 export 'data/datasources/remote/service/open_weather_api_service.dart';

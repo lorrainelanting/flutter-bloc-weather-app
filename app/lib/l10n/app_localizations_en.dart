@@ -57,6 +57,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsPlaceholder => 'Settings Screen';
 
   @override
+  String get savedCitiesSearchHint => 'Search for a city or place';
+
+  @override
+  String get savedCitiesNoResults => 'No locations found';
+
+  @override
+  String get savedCitiesEmptyTitle => 'No saved cities yet';
+
+  @override
+  String get savedCitiesEmptyMessage =>
+      'Search for a location to add its weather.';
+
+  @override
+  String get savedCitiesAddLocation => 'Add location';
+
+  @override
+  String get savedCitiesRemoveSelected => 'Remove selected';
+
+  @override
+  String get savedCitiesWeatherUnavailable => 'Weather preview unavailable';
+
+  @override
+  String savedCitiesUpdatedAt(String value) {
+    return 'Updated $value';
+  }
+
+  @override
   String weatherFeelsLike(String value) {
     return 'Feels like $value°';
   }

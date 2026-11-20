@@ -18,3 +18,12 @@ class LoadWeather extends HomeEvent {
   @override
   List<Object> get props => [city];
 }
+
+class LoadWeatherForSavedLocation extends HomeEvent {
+  final WeatherLocation location;
+
+  const LoadWeatherForSavedLocation(this.location);
+
+  @override
+  List<Object> get props => [location];
+}

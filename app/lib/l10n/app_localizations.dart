@@ -190,6 +190,54 @@ abstract class AppLocalizations {
   /// **'Settings Screen'**
   String get settingsPlaceholder;
 
+  /// No description provided for @savedCitiesSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for a city or place'**
+  String get savedCitiesSearchHint;
+
+  /// No description provided for @savedCitiesNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No locations found'**
+  String get savedCitiesNoResults;
+
+  /// No description provided for @savedCitiesEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No saved cities yet'**
+  String get savedCitiesEmptyTitle;
+
+  /// No description provided for @savedCitiesEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for a location to add its weather.'**
+  String get savedCitiesEmptyMessage;
+
+  /// No description provided for @savedCitiesAddLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Add location'**
+  String get savedCitiesAddLocation;
+
+  /// No description provided for @savedCitiesRemoveSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove selected'**
+  String get savedCitiesRemoveSelected;
+
+  /// No description provided for @savedCitiesWeatherUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather preview unavailable'**
+  String get savedCitiesWeatherUnavailable;
+
+  /// No description provided for @savedCitiesUpdatedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated {value}'**
+  String savedCitiesUpdatedAt(String value);
+
   /// No description provided for @weatherFeelsLike.
   ///
   /// In en, this message translates to:

@@ -1,8 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:core/core.dart';
 import 'package:weather/domain/models/weather_data.dart';
+import 'package:weather/domain/models/weather_location.dart';
 import 'package:weather/domain/usecases/get_weather_usecase.dart';
 import 'package:weather/domain/usecases/get_weather_by_location_usecase.dart';
+import 'package:weather/domain/usecases/get_weather_for_saved_location_usecase.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -11,16 +13,22 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetWeatherUseCase _getWeatherUseCase;
   final GetWeatherByLocationUseCase _getWeatherByLocationUseCase;
+  final GetWeatherForSavedLocationUseCase _getWeatherForSavedLocationUseCase;
 
   HomeBloc(
     this._getWeatherUseCase,
     this._getWeatherByLocationUseCase,
+    this._getWeatherForSavedLocationUseCase,
   ) : super(HomeInitial()) {
     on<LoadWeather>(_onLoadWeather);
     on<LoadWeatherForCurrentLocation>(_onLoadWeatherForCurrentLocation);
+    on<LoadWeatherForSavedLocation>(_onLoadWeatherForSavedLocation);
   }
 
-  Future<void> _onLoadWeather(LoadWeather event, Emitter<HomeState> emit) async {
+  Future<void> _onLoadWeather(
+    LoadWeather event,
+    Emitter<HomeState> emit,
+  ) async {
     emit(HomeLoading());
     try {
       final weather = await _getWeatherUseCase.execute(event.city);
@@ -44,6 +52,23 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(HomeError(e.message, isPermissionDenied: true));
     } on LocationServiceDisabledFailure catch (e) {
       emit(HomeError(e.message, isPermissionDenied: true));
+    } on Failure catch (e) {
+      emit(HomeError(e.message));
+    } catch (e) {
+      emit(HomeError(e.toString()));
+    }
+  }
+
+  Future<void> _onLoadWeatherForSavedLocation(
+    LoadWeatherForSavedLocation event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(HomeLoading());
+    try {
+      final weather = await _getWeatherForSavedLocationUseCase.execute(
+        event.location,
+      );
+      emit(HomeLoaded(weather));
     } on Failure catch (e) {
       emit(HomeError(e.message));
     } catch (e) {

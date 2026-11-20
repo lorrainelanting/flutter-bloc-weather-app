@@ -14,7 +14,8 @@ void configureDependencies() => getIt.init();
 @module
 abstract class RegisterModule {
   @lazySingleton
-  BaseApiClient get baseApiClient => BaseApiClient(baseUrl: "https://api.openweathermap.org/data/2.5/");
+  BaseApiClient getBaseApiClient(AppConfig appConfig) =>
+      BaseApiClient(baseUrl: appConfig.openWeatherBaseUrl);
 
   @lazySingleton
   GoogleSignIn get googleSignIn => GoogleSignIn();
@@ -35,18 +36,16 @@ abstract class RegisterModule {
   AuthRemoteDataSource getAuthRemoteDataSource(
     GoogleSignIn googleSignIn,
     FirebaseAuth firebaseAuth,
-  ) =>
-      AuthRemoteDataSourceImpl(googleSignIn, firebaseAuth);
+  ) => AuthRemoteDataSourceImpl(googleSignIn, firebaseAuth);
 
   @lazySingleton
   AuthRepository getAuthRepository(
     AuthLocalDataSource localDataSource,
     AuthRemoteDataSource remoteDataSource,
-  ) =>
-      AuthRepositoryImpl(
-        localDataSource: localDataSource,
-        remoteDataSource: remoteDataSource,
-      );
+  ) => AuthRepositoryImpl(
+    localDataSource: localDataSource,
+    remoteDataSource: remoteDataSource,
+  );
 
   @injectable
   LoginWithEmailUseCase getLoginWithEmailUseCase(AuthRepository repository) =>
@@ -57,33 +56,68 @@ abstract class RegisterModule {
       LoginWithGoogleUseCase(repository);
 
   @injectable
-  RegisterWithEmailUseCase getRegisterWithEmailUseCase(AuthRepository repository) =>
-      RegisterWithEmailUseCase(repository);
+  RegisterWithEmailUseCase getRegisterWithEmailUseCase(
+    AuthRepository repository,
+  ) => RegisterWithEmailUseCase(repository);
 
   @injectable
-  RegisterWithGoogleUseCase getRegisterWithGoogleUseCase(AuthRepository repository) =>
-      RegisterWithGoogleUseCase(repository);
+  RegisterWithGoogleUseCase getRegisterWithGoogleUseCase(
+    AuthRepository repository,
+  ) => RegisterWithGoogleUseCase(repository);
 
   @injectable
-  SignOutUseCase getSignOutUseCase(AuthRepository repository) => SignOutUseCase(repository);
+  SignOutUseCase getSignOutUseCase(AuthRepository repository) =>
+      SignOutUseCase(repository);
 
   @injectable
-  OpenWeatherApiService getOpenWeatherApiService(BaseApiClient client) => OpenWeatherApiService(client);
+  OpenWeatherApiService getOpenWeatherApiService(BaseApiClient client) =>
+      OpenWeatherApiService(client);
 
   @lazySingleton
-  WeatherRepository getWeatherRepository(OpenWeatherApiService apiService, AppConfig appConfig) =>
-      WeatherRepositoryImpl(apiService, appConfig);
+  SavedCitiesLocalDataSource get savedCitiesLocalDataSource =>
+      SharedPreferencesSavedCitiesDataSource();
+
+  @lazySingleton
+  WeatherRepository getWeatherRepository(
+    OpenWeatherApiService apiService,
+    AppConfig appConfig,
+    SavedCitiesLocalDataSource localDataSource,
+  ) => WeatherRepositoryImpl(apiService, appConfig, localDataSource);
 
   @injectable
-  GetWeatherUseCase getGetWeatherUseCase(WeatherRepository repository) => GetWeatherUseCase(repository);
+  GetWeatherUseCase getGetWeatherUseCase(WeatherRepository repository) =>
+      GetWeatherUseCase(repository);
 
   @injectable
   GetWeatherByLocationUseCase getGetWeatherByLocationUseCase(
     WeatherRepository weatherRepository,
     LocationService locationService,
-  ) =>
-      GetWeatherByLocationUseCase(
-        weatherRepository: weatherRepository,
-        locationService: locationService,
-      );
+  ) => GetWeatherByLocationUseCase(
+    weatherRepository: weatherRepository,
+    locationService: locationService,
+  );
+
+  @injectable
+  SearchLocationsUseCase getSearchLocationsUseCase(
+    WeatherRepository repository,
+  ) => SearchLocationsUseCase(repository);
+
+  @injectable
+  GetSavedCitiesUseCase getGetSavedCitiesUseCase(
+    WeatherRepository repository,
+  ) => GetSavedCitiesUseCase(repository);
+
+  @injectable
+  SaveLocationUseCase getSaveLocationUseCase(WeatherRepository repository) =>
+      SaveLocationUseCase(repository);
+
+  @injectable
+  RemoveSavedCitiesUseCase getRemoveSavedCitiesUseCase(
+    WeatherRepository repository,
+  ) => RemoveSavedCitiesUseCase(repository);
+
+  @injectable
+  GetWeatherForSavedLocationUseCase getGetWeatherForSavedLocationUseCase(
+    WeatherRepository repository,
+  ) => GetWeatherForSavedLocationUseCase(repository);
 }

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:weather/weather.dart';
 
 abstract class DashboardEvent extends Equatable {
   const DashboardEvent();
@@ -14,4 +15,13 @@ class DashboardTabChanged extends DashboardEvent {
 
   @override
   List<Object> get props => [index];
+}
+
+class DashboardSavedCitySelected extends DashboardEvent {
+  final WeatherLocation location;
+
+  const DashboardSavedCitySelected(this.location);
+
+  @override
+  List<Object> get props => [location];
 }

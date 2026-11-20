@@ -7,17 +7,29 @@ import 'package:weather/weather.dart';
 
 class MockGetWeatherUseCase extends Mock implements GetWeatherUseCase {}
 
-class MockGetWeatherByLocationUseCase extends Mock implements GetWeatherByLocationUseCase {}
+class MockGetWeatherByLocationUseCase extends Mock
+    implements GetWeatherByLocationUseCase {}
+
+class MockGetWeatherForSavedLocationUseCase extends Mock
+    implements GetWeatherForSavedLocationUseCase {}
 
 void main() {
   late HomeBloc homeBloc;
   late MockGetWeatherUseCase mockGetWeatherUseCase;
   late MockGetWeatherByLocationUseCase mockGetWeatherByLocationUseCase;
+  late MockGetWeatherForSavedLocationUseCase
+  mockGetWeatherForSavedLocationUseCase;
 
   setUp(() {
     mockGetWeatherUseCase = MockGetWeatherUseCase();
     mockGetWeatherByLocationUseCase = MockGetWeatherByLocationUseCase();
-    homeBloc = HomeBloc(mockGetWeatherUseCase, mockGetWeatherByLocationUseCase);
+    mockGetWeatherForSavedLocationUseCase =
+        MockGetWeatherForSavedLocationUseCase();
+    homeBloc = HomeBloc(
+      mockGetWeatherUseCase,
+      mockGetWeatherByLocationUseCase,
+      mockGetWeatherForSavedLocationUseCase,
+    );
   });
 
   tearDown(() {
@@ -47,6 +59,12 @@ void main() {
       ),
     ],
   );
+  const tSavedLocation = WeatherLocation(
+    name: 'London',
+    country: 'GB',
+    latitude: 51.5072,
+    longitude: -0.1276,
+  );
 
   test('initial state should be HomeInitial', () {
     expect(homeBloc.state, HomeInitial());
@@ -55,25 +73,36 @@ void main() {
   blocTest<HomeBloc, HomeState>(
     'emits [HomeLoading, HomeLoaded] when LoadWeather is added successfully',
     build: () {
-      when(() => mockGetWeatherUseCase.execute(any()))
-          .thenAnswer((_) async => tWeatherData);
+      when(
+        () => mockGetWeatherUseCase.execute(any()),
+      ).thenAnswer((_) async => tWeatherData);
       return homeBloc;
     },
     act: (bloc) => bloc.add(const LoadWeather('London')),
-    expect: () => [
-      HomeLoading(),
-      HomeLoaded(tWeatherData),
-    ],
+    expect: () => [HomeLoading(), HomeLoaded(tWeatherData)],
     verify: (_) {
       verify(() => mockGetWeatherUseCase.execute('London')).called(1);
     },
   );
 
   blocTest<HomeBloc, HomeState>(
+    'loads and caches fresh weather for a selected saved location',
+    build: () {
+      when(
+        () => mockGetWeatherForSavedLocationUseCase.execute(tSavedLocation),
+      ).thenAnswer((_) async => tWeatherData);
+      return homeBloc;
+    },
+    act: (bloc) => bloc.add(const LoadWeatherForSavedLocation(tSavedLocation)),
+    expect: () => [HomeLoading(), HomeLoaded(tWeatherData)],
+  );
+
+  blocTest<HomeBloc, HomeState>(
     'emits [HomeLoading, HomeError] when LoadWeather fails',
     build: () {
-      when(() => mockGetWeatherUseCase.execute(any()))
-          .thenThrow(Exception('Failed to load weather'));
+      when(
+        () => mockGetWeatherUseCase.execute(any()),
+      ).thenThrow(Exception('Failed to load weather'));
       return homeBloc;
     },
     act: (bloc) => bloc.add(const LoadWeather('London')),
@@ -86,28 +115,30 @@ void main() {
   blocTest<HomeBloc, HomeState>(
     'emits [HomeLoading, HomeLoaded] when LoadWeatherForCurrentLocation succeeds',
     build: () {
-      when(() => mockGetWeatherByLocationUseCase.execute())
-          .thenAnswer((_) async => tWeatherData);
+      when(
+        () => mockGetWeatherByLocationUseCase.execute(),
+      ).thenAnswer((_) async => tWeatherData);
       return homeBloc;
     },
     act: (bloc) => bloc.add(const LoadWeatherForCurrentLocation()),
-    expect: () => [
-      HomeLoading(),
-      HomeLoaded(tWeatherData),
-    ],
+    expect: () => [HomeLoading(), HomeLoaded(tWeatherData)],
   );
 
   blocTest<HomeBloc, HomeState>(
     'emits a permission-denied HomeError when location permission is denied',
     build: () {
-      when(() => mockGetWeatherByLocationUseCase.execute())
-          .thenThrow(const LocationPermissionDeniedFailure());
+      when(
+        () => mockGetWeatherByLocationUseCase.execute(),
+      ).thenThrow(const LocationPermissionDeniedFailure());
       return homeBloc;
     },
     act: (bloc) => bloc.add(const LoadWeatherForCurrentLocation()),
     expect: () => [
       HomeLoading(),
-      const HomeError('Location permission was denied', isPermissionDenied: true),
+      const HomeError(
+        'Location permission was denied',
+        isPermissionDenied: true,
+      ),
     ],
   );
 }
