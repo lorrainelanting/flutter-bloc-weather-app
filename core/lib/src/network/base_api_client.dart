@@ -14,7 +14,7 @@ class BaseApiClient {
     _dio = Dio(
       options ??
           BaseOptions(
-            baseUrl: baseUrl,
+            baseUrl: baseUrl.endsWith('/') ? baseUrl : '$baseUrl/',
             connectTimeout: const Duration(seconds: 30),
             receiveTimeout: const Duration(seconds: 30),
             sendTimeout: const Duration(seconds: 30),

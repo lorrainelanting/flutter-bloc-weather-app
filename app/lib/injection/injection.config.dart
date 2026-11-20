@@ -19,11 +19,15 @@ import 'package:generic_app/presentation/auth/login/bloc/login_bloc.dart'
 import 'package:generic_app/presentation/auth/register/bloc/register_bloc.dart'
     as _i806;
 import 'package:generic_app/presentation/home/bloc/home_bloc.dart' as _i55;
+import 'package:generic_app/presentation/saved_cities/bloc/saved_cities_bloc.dart'
+    as _i64;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:google_sign_in/google_sign_in.dart' as _i116;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:weather/domain/usecases/get_weather_by_location_usecase.dart'
     as _i584;
+import 'package:weather/domain/usecases/get_weather_for_saved_location_usecase.dart'
+    as _i337;
 import 'package:weather/domain/usecases/get_weather_usecase.dart' as _i9;
 import 'package:weather/weather.dart' as _i217;
 
@@ -35,7 +39,6 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final registerModule = _$RegisterModule();
-    gh.lazySingleton<_i494.BaseApiClient>(() => registerModule.baseApiClient);
     gh.lazySingleton<_i116.GoogleSignIn>(() => registerModule.googleSignIn);
     gh.lazySingleton<_i59.FirebaseAuth>(() => registerModule.firebaseAuth);
     gh.lazySingleton<_i494.AppConfig>(() => registerModule.appConfig);
@@ -44,6 +47,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i662.AuthLocalDataSource>(
       () => registerModule.authLocalDataSource,
+    );
+    gh.lazySingleton<_i217.SavedCitiesLocalDataSource>(
+      () => registerModule.savedCitiesLocalDataSource,
+    );
+    gh.lazySingleton<_i494.BaseApiClient>(
+      () => registerModule.getBaseApiClient(gh<_i494.AppConfig>()),
     );
     gh.lazySingleton<_i494.NavigationService>(
       () => _i1067.NavigationServiceImpl(),
@@ -67,10 +76,8 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.getWeatherRepository(
         gh<_i217.OpenWeatherApiService>(),
         gh<_i494.AppConfig>(),
+        gh<_i217.SavedCitiesLocalDataSource>(),
       ),
-    );
-    gh.factory<_i217.GetWeatherUseCase>(
-      () => registerModule.getGetWeatherUseCase(gh<_i217.WeatherRepository>()),
     );
     gh.factory<_i662.LoginWithEmailUseCase>(
       () => registerModule.getLoginWithEmailUseCase(gh<_i662.AuthRepository>()),
@@ -110,10 +117,47 @@ extension GetItInjectableX on _i174.GetIt {
         registerWithGoogleUseCase: gh<_i662.RegisterWithGoogleUseCase>(),
       ),
     );
+    gh.factory<_i217.GetWeatherUseCase>(
+      () => registerModule.getGetWeatherUseCase(gh<_i217.WeatherRepository>()),
+    );
+    gh.factory<_i217.SearchLocationsUseCase>(
+      () => registerModule.getSearchLocationsUseCase(
+        gh<_i217.WeatherRepository>(),
+      ),
+    );
+    gh.factory<_i217.GetSavedCitiesUseCase>(
+      () => registerModule.getGetSavedCitiesUseCase(
+        gh<_i217.WeatherRepository>(),
+      ),
+    );
+    gh.factory<_i217.SaveLocationUseCase>(
+      () =>
+          registerModule.getSaveLocationUseCase(gh<_i217.WeatherRepository>()),
+    );
+    gh.factory<_i217.RemoveSavedCitiesUseCase>(
+      () => registerModule.getRemoveSavedCitiesUseCase(
+        gh<_i217.WeatherRepository>(),
+      ),
+    );
+    gh.factory<_i217.GetWeatherForSavedLocationUseCase>(
+      () => registerModule.getGetWeatherForSavedLocationUseCase(
+        gh<_i217.WeatherRepository>(),
+      ),
+    );
+    gh.factory<_i64.SavedCitiesBloc>(
+      () => _i64.SavedCitiesBloc(
+        gh<_i217.SearchLocationsUseCase>(),
+        gh<_i217.GetSavedCitiesUseCase>(),
+        gh<_i217.SaveLocationUseCase>(),
+        gh<_i217.RemoveSavedCitiesUseCase>(),
+        gh<_i217.GetWeatherForSavedLocationUseCase>(),
+      ),
+    );
     gh.factory<_i55.HomeBloc>(
       () => _i55.HomeBloc(
         gh<_i9.GetWeatherUseCase>(),
         gh<_i584.GetWeatherByLocationUseCase>(),
+        gh<_i337.GetWeatherForSavedLocationUseCase>(),
       ),
     );
     return this;

@@ -54,7 +54,7 @@ android {
 
     buildTypes {
         getByName("debug") {
-            versionNameSuffix = "-debug"
+//            versionNameSuffix = "-debug"
             isDebuggable = true
         }
 
